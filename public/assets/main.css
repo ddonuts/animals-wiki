@@ -1,0 +1,174 @@
+body {
+    background-size: cover;
+}
+h1 {
+    text-align: center;
+    color: #fff;
+}
+.species-list {
+    display: inline-block;
+    background: rgba(0, 0, 0, 0.4);
+    margin: 0 10px 10px;
+}
+.species-list th,
+.species-list td {
+    border-top: 1px dashed rgba(255, 255, 255, 0.1);
+    position: relative;
+    vertical-align: top;
+}
+.species-list th {
+    padding: 3px 10px;
+    text-align: right;
+    height: 31px;
+    border-right: 1px solid #ddd;
+    color: #fff;
+    font-weight: normal;
+}
+.species-list td {
+    padding: 3px 5px;
+    text-align: center;
+}
+.hierarchy-left,
+.hierarchy-right {
+    position: absolute;
+    display: block;
+    width: 50%;
+    height: 35px;
+    margin: 0;
+    padding: 0;
+    border-color: transparent;
+}
+.hierarchy-left {
+    left: 0;
+    border-right: 2px solid #fff;
+}
+.hierarchy-right {
+    left: 50%;
+    border-left: 2px solid #fff;
+}
+.hierachy-undefined .hierarchy-left,
+.hierachy-undefined .hierarchy-right {
+    border-style: dashed;
+}
+.hierarchy-split {
+    border-top: 4px solid #fff;
+}
+.hierarchy-dot {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 10px;
+    height: 10px;
+    margin: -5px;
+    background: #fff;
+    border-radius: 5px;
+}
+.species {
+    position: relative;
+    border: 1px solid #ddd;
+    margin: 5px;
+    border-radius: 5px;
+}
+.species .delete {
+    position: absolute;
+    right: 5px;
+    top: 0;
+    font-weight: bold;
+    font-size: 20px;
+    text-shadow: #000 0 0 3px;
+    color: #fff;
+    text-decoration: none;
+}
+.species .latin-name {
+    font-style: italic;
+}
+.species .description {
+    max-width: 200px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+.species-image-container {
+    height: 150px;
+    margin: 5px auto;
+    text-align: center;
+}
+.species-image-container img {
+    max-height: 150px;
+    max-width: 100%;
+}
+.species-add-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(50, 50, 50, 0.7);
+}
+.species-add-form {
+    position: fixed;
+    top: 70px;
+    left: 50%;
+    vertical-align: top;
+    display: block;
+    width: 600px;
+    padding: 20px;
+    margin-left: -300px;
+}
+.species-add-form h4 {
+    color: #fff;
+}
+.species-add-form-close {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    font-size: 30px;
+    color: #fff;
+}
+.species-add-form-close:hover {
+    text-decoration: none;
+}
+.list-group {
+    max-height: 450px;
+    overflow-y: auto;
+}
+.list-group-item:hover {
+    background: #eee;
+    cursor: pointer;
+}
+.species-add-list-image {
+    float: left;
+    width: 50px;
+    margin: 0 10px 10px 0;
+}
+.species-add-list-decsription {
+    max-height: 100px;
+}
+#species-add-button,
+#species-reload-button {
+    position: fixed;
+    display: block;
+    width: 50px;
+    height: 50px;
+    bottom: 20px;
+    background: rgba(0, 0, 0, 0.4);
+    box-shadow: white 0 0 5px;
+    border-radius: 25px;
+    color: #fff;
+    text-align: center;
+    font-size: 30px;
+}
+#species-add-button:hover,
+#species-reload-button:hover {
+    text-decoration: none;
+    background: #fff;
+    color: #000;
+}
+#species-add-button {
+    right: 20px;
+}
+#species-reload-button {
+    right: 80px;
+}
+.tooltip.show {
+    opacity: .8;
+}

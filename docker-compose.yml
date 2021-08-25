@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  aw-db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: animals_wiki
+      MYSQL_USER: animals_wiki
+      MYSQL_PASSWORD: secret
+    ports:
+      - "9907:3306"
+  aw-web:
+    image: php:7.4-apache
+    #container_name: php_web
+    depends_on:
+      - aw-db
+    volumes:
+      - .:/var/www/
+    ports:
+      - "8200:80"
+    env_file:
+      - .env
+    stdin_open: true
+    tty: true

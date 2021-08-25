@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Animals Wiki</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/main.css">
+  </head>
+  <body>
+    <h1>Animals Wiki</h1>
+    <div id="app">
+
+        <!-- main-table -->
+        <table class="species-list">
+            <!-- tree -->
+            <tr v-for="row in hierarchyNames.length">
+                <!-- left margin -->
+                <th>{{ hierarchyNames[row - 1] }}</th>
+                <!-- tree part -->
+                <td v-for="hierarchy in orderedSpeciesHierarchyLists[row - 1]" :colspan="hierarchy.speciesNum" :title="hierarchy.name" :class="{ 'hierachy-undefined': !hierarchy.uniqueId }">
+                    <div class="hierarchy-left" :class="{ 'hierarchy-split': hierarchy.hasLeftBrother }"></div>
+                    <div class="hierarchy-right" :class="{ 'hierarchy-split': hierarchy.hasRightBrother }"></div>
+                    <a v-if="hierarchy.uniqueId" :href="hierarchy.wikipediaPageUrl" target="_blank" class="hierarchy-dot" :id="'hierarchy-' + hierarchy.uniqueId" @click.prevent="showHierarchy(hierarchy)"></a>
+                    <b-popover v-if="hierarchy.uniqueId" :target="'hierarchy-' + hierarchy.uniqueId" triggers="hover">
+                        {{ hierarchy.name }}
+                    </b-popover>
+                </td>
+            </tr>
+            <!-- species -->
+            <tr class="last-row">
+                <th>Espèce<div style="height: 300px;"></div></th>
+                <!-- species part -->
+                <td v-for="species in orderedSpeciesList">
+                    <b-card :title="species.name"
+                          :img-src="species.imageUrl"
+                          :img-alt="species.name"
+                          img-top
+                          tag="article"
+                          class="species"
+                          no-body
+                    >
+                        <b-card-body>
+                            <b-card-title><strong>{{ species.name }}</strong></b-card-title>
+                            <a href="#" @click.prevent="removeSpecies(species)" class="delete">&times;</a>
+                            <p class="card-text latin-name">{{ species.latinName }}</p>
+                            <p class="card-text description" v-html="species.description"></p>
+                            <a :href="species.wikipediaPageUrl" target="_blank">Voir plus</a>
+                        </b-card-body>
+                        <template v-if="species.subSpecies.length > 0">
+                            <p><strong>Sous-espèces :</strong></p>
+                            <b-list-group flush>
+                                <b-list-group-item v-for="subSpecies in species.subSpecies" class="list-group-item"><a href="#" @click.prevent="showSubSpecies(subSpecies)">{{ subSpecies }}</a></b-list-group-item>
+                            </b-list-group>
+                        </template>
+                    </b-card>
+                </td>
+            </tr>
+        </table>
+
+        <!-- add button -->
+        <a href="#" @click.prevent="showAddSpeciesForm()" id="species-add-button">+</a>
+        <b-tooltip :target="'species-add-button'" title="Ajouter une espèce" placement="top"></b-tooltip>
+        <a href="/#girafe,okapi,cheval,Zèbre%20de%20Grévy,Ostrea%20edulis,Pelagia%20noctiluca,Truffe%20noire,Truffe%20blanche,Trompette%20de%20la%20mort,posidonie,Tulipe,Hêtre%20commun,eucalyptus" id="species-reload-button">.</a>
+        <b-tooltip :target="'species-reload-button'" title="Charger un exemple" placement="top"></b-tooltip>
+
+        <!-- add form -->
+        <div class="species-add-overlay" v-if="showAddForm"></div>
+        <div class="species-add-form" v-if="showAddForm">
+            <a href="#" @click.prevent="hideAddSpeciesForm()" class="species-add-form-close">&times;</a>
+            <h4>Ajouter une espèce</h4>
+            <div class="input-group mb-3">
+              <b-form-input
+                v-model="name"
+                ref="speciesInput"
+                type="text"
+                placeholder="exple: Panda géant, Cheval, Hêtre, Okapi, ..."
+                @keyup.enter.native="submitSpecies(name)"
+                @keyup.esc.native="hideAddSpeciesForm()"
+              ></b-form-input>
+              <div class="input-group-append">
+                <b-btn :variant="addFormLoading ? 'secondary': 'primary'" @click="addFormLoading ? '' : submitSpecies(name)">{{ addFormLoading ? '...' : 'Ok' }}</b-btn>
+              </div>
+            </div>
+            
+            <b-list-group v-if="!addFormLoading">
+              <b-list-group-item v-for="choice, i in choices" :key="i" @click="selectChoice(choice)" class="flex-column align-items-start">
+                <img :src="choice.imageUrl" class="species-add-list-image" />
+                <div class="species-add-list-decsription">
+                    <h5>{{ choice.name }}</h5>
+                    <small>{{ choice.description }}</small>
+                </div>
+              </b-list-group-item>
+            </b-list-group>
+        </div>
+
+    </div>
+
+    <script>
+        var module = [];
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-vue@2.0.0-rc.11/dist/bootstrap-vue.common.min.js"></script>
+
+    <script src="/assets/main.js"></script>
+  </body>
+</html>
