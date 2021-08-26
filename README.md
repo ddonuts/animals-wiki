@@ -22,3 +22,9 @@ make start
 - Go to `http://localhost:8200/`.
 - Use the '+' button to add species (in french).
 - Discover incredible species relations ;)
+
+### Screenshots
+
+![Screenshot1](./screenshots/screenshot1.png)
+
+![Screenshot2](./screenshots/screenshot2.png)
